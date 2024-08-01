@@ -34,8 +34,6 @@ let numbersName3 = [
     "eighty",
     "ninety",
 ];
-let remainsFromTen = number % 10;
-let remainsFromHundred = number % 100;
 
 module.exports = function toReadable(number) {
     number = number.toString();
@@ -48,6 +46,8 @@ module.exports = function toReadable(number) {
 };
 
 function convertNumberToDozens(number) {
+    let remainsFromTen = number % 10;
+
     if (number < 20 && number >= 10) {
         return numbersName2[number % 10];
     } else if (number >= 20) {
@@ -60,11 +60,18 @@ function convertNumberToDozens(number) {
 }
 
 function convertNumberToHundreds(number) {
+    let remainsFromHundred = number % 100;
+    let remainsFromTen = number % 10;
+
     if (number < 1000 && number >= 100) {
-        return remainsFromHundred === 0
-            ? `${numbersName1[Math.floor(number / 100)]} hundred `
-            : `${
+        return remainsFromHundred == 0
+            ? `${numbersName1[Math.floor(number / 100)]} hundred`
+            : remainsFromHundred >= 10
+            ? `${
                   numbersName1[Math.floor(number / 100)]
-              } hundred ${convertNumberToDozens(remainsFromHundred)}`;
+              } hundred ${convertNumberToDozens(remainsFromHundred)}`
+            : `${numbersName1[Math.floor(number / 100)]} hundred ${
+                  numbersName1[remainsFromTen]
+              }`;
     }
 }
